@@ -15,7 +15,7 @@ app.get('/health',(_req,res)=>{
 })
 
 const port = process.env.PORT || 4002;
-const serviceName = process.env.SERVICE_NAME || 'inventory-service';
+const serviceName = process.env.SERVICE_NAME || 'Inventory-Service';
 
 //Error handler
 app.use((err,_req,res,_next)=>{
