@@ -31,7 +31,7 @@ const updateInventory = async (
     if (parsedBody.data.actionType === "IN") {
       newQuantity += parsedBody.data.quantity;
     } else if (parsedBody.data.actionType === "OUT") {
-      newQuantity = parsedBody.data.quantity;
+      newQuantity -= parsedBody.data.quantity;
     } else {
       return res.status(400).json({ message: "Invalid action type" });
     }
@@ -54,7 +54,7 @@ const updateInventory = async (
         quantity: true,
       },
     });
-    return res.status(200).json(updateInventory);
+    return res.status(200).json(updatedInventory);
   } catch (error) {
     next(error);
   }
