@@ -12,9 +12,12 @@ const createInventory = async (
     if (!parsedBody.success) {
       return res.status(400).json({ error: parsedBody.error.errors });
     }
+    const { productId, sku, quantity } = parsedBody.data;
     const inventory = await prisma.inventory.create({
       data: {
-        ...parsedBody.data,
+        productId: productId,
+        sku: sku,
+        quantity: quantity,
         histories: {
           create: {
             actionType: "IN",

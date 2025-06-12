@@ -16,16 +16,15 @@ app.get("/health", (_req, res) => {
 });
 
 // routes
-// app.post("/inventories", createInventory as import("express").RequestHandler);
-
-const port = process.env.PORT || 4002;
-const serviceName = process.env.SERVICE_NAME || "Inventory-Service";
+app.post("/inventories", createInventory as any);
 
 //Error handler
 app.use((err, _req, res, _next) => {
   console.log(err.stack);
   res.status(500).json({ message: "Internal server error" });
 });
+const port = process.env.PORT || 4002;
+const serviceName = process.env.SERVICE_NAME || "Inventory-Service";
 
 app.listen(port, () => {
   console.log(`${serviceName} is running on port ${port}`);
