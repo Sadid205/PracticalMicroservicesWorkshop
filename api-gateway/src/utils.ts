@@ -42,7 +42,8 @@ export const configureRoutes = (app: Express) => {
       route.methods.forEach((method) => {
         const handler = createHandler(hostname, route.path, method);
         const endpoint = `/api${route.path}`;
-        // console.log(endpoint);
+        console.log(endpoint, handler);
+
         app[method](`/api${route.path}`, handler);
       });
     });
