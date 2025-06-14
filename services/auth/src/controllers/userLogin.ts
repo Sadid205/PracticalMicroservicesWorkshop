@@ -3,10 +3,30 @@ import jwt from "jsonwebtoken";
 import prisma from "@/prisma";
 import { UserLoginSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
+import { LoginAttempt } from "@prisma/client";
+
+type LoginHistory = {
+  userId: string;
+  userAgent: string | undefined;
+  ipAddress: string | undefined;
+  attempt: LoginAttempt;
+};
+
+const createLoginHistory = async (info: LoginHistory) => {
+  await prisma.loginHistory.create({
+    data: {
+      userId: info.userId,
+      userAgent: info.userAgent,
+      ipAddress: info.ipAddress,
+      attempt: info.attempt,
+    },
+  });
+};
 
 const userLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const ipAddress = req.headers["x-forwarded-for"] || req.ip || "";
+    const ipAddress =
+      (req.headers["x-forwarded-for"] as string) || req.ip || "";
     const userAgent = req.header["user-agent"] || "";
     // validate the request body
     const parsedBody = UserLoginSchema.safeParse(req.body);
@@ -20,6 +40,12 @@ const userLogin = async (req: Request, res: Response, next: NextFunction) => {
       },
     });
     if (!user) {
+      await createLoginHistory({
+        userId: "Guest",
+        userAgent,
+        ipAddress,
+        attempt: "FAILED",
+      });
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -29,14 +55,32 @@ const userLogin = async (req: Request, res: Response, next: NextFunction) => {
       user.password
     );
     if (!isMatch) {
+      await createLoginHistory({
+        userId: user.id,
+        userAgent,
+        ipAddress,
+        attempt: "FAILED",
+      });
       return res.status(400).json({ message: "Invalid credentials" });
     }
     // check if the user is verified
     if (!user.varified) {
+      await createLoginHistory({
+        userId: user.id,
+        userAgent,
+        ipAddress,
+        attempt: "FAILED",
+      });
       return res.status(400).json({ message: "User not verified" });
     }
     // check if the account is active
     if (user.status !== "ACTIVE") {
+      await createLoginHistory({
+        userId: user.id,
+        userAgent,
+        ipAddress,
+        attempt: "FAILED",
+      });
       return res
         .status(400)
         .json({ message: `Your account ${user.status.toLocaleLowerCase()}` });
@@ -47,6 +91,12 @@ const userLogin = async (req: Request, res: Response, next: NextFunction) => {
       process.env.JWT_SECRET ?? "My_Secret_Key",
       { expiresIn: "2h" }
     );
+    await createLoginHistory({
+      userId: user.id,
+      userAgent,
+      ipAddress,
+      attempt: "SUCCESS",
+    });
     return res.status(200).json({
       accessToken,
     });
