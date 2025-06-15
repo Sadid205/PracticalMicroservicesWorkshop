@@ -31,7 +31,7 @@ model User {
   email             String             @unique
   password          String
   role              Role               @default(USER)
-  varified          Boolean            @default(false)
+  verified          Boolean            @default(false)
   status            AccountStatus      @default(PENDING)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
@@ -78,5 +78,5 @@ model VerificationCode {
   type       VerificationCodeType @default(ACCOUNT_ACTIVATION)
   issuedAt   DateTime             @default(now())
   expiresAt  DateTime
-  varifiedAt DateTime?
+  verifiedAt DateTime?
 }

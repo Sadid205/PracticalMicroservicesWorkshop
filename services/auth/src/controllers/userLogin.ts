@@ -40,12 +40,6 @@ const userLogin = async (req: Request, res: Response, next: NextFunction) => {
       },
     });
     if (!user) {
-      await createLoginHistory({
-        userId: "Guest",
-        userAgent,
-        ipAddress,
-        attempt: "FAILED",
-      });
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -64,7 +58,7 @@ const userLogin = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     // check if the user is verified
-    if (!user.varified) {
+    if (!user.verified) {
       await createLoginHistory({
         userId: user.id,
         userAgent,

@@ -40,3 +40,5 @@ const serviceName = process.env.SERVICE_NAME || "Email-Service";
 app.listen(port, () => {
   console.log(`${serviceName} is running on port ${port}`);
 });
+
+

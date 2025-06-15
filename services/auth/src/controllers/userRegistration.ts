@@ -55,7 +55,7 @@ const userRegistration = async (
         name: true,
         role: true,
         status: true,
-        varified: true,
+        verified: true,
       },
     });
     console.log("User created:", user);
