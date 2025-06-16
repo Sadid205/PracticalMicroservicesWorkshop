@@ -2,7 +2,12 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
-import { createProduct, getProductDetails, getProducts } from "./controllers";
+import {
+  createProduct,
+  getProductDetails,
+  getProducts,
+  updateProduct,
+} from "./controllers";
 
 dotenv.config();
 
@@ -15,19 +20,20 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "UP" });
 });
 
-app.use((req, res, next) => {
-  const allowedOrigins = ["http://localhost:8001", "http://127.0.0.1:8001"];
-  const origin = req.headers.origin || "";
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    next();
-  } else {
-    res.status(403).json({ message: "Forbidden" });
-  }
-});
+// app.use((req, res, next) => {
+//   const allowedOrigins = ["http://localhost:8001", "http://127.0.0.1:8001"];
+//   const origin = req.headers.origin || "";
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin);
+//     next();
+//   } else {
+//     res.status(403).json({ message: "Forbidden" });
+//   }
+// });
 
 // routes
 app.get("/products/:id", getProductDetails as any);
+app.put("/products/:id", updateProduct as any);
 app.get("/products", getProducts);
 app.post("/products", createProduct as any);
 
