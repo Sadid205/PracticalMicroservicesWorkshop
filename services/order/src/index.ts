@@ -28,8 +28,8 @@ app.get("/health", (_req, res) => {
 
 // routes
 app.post("/orders/checkout", checkout as any);
-app.post("/orders/:id", getOrderById as any);
-app.post("/orders", getOrders as any);
+app.get("/orders/:id", getOrderById as any);
+app.get("/orders", getOrders as any);
 //Error handler
 app.use((err, _req, res, _next) => {
   console.log(err.stack);
