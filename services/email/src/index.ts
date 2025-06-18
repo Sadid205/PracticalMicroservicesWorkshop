@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import { getEmails, sendEmail } from "./controllers";
-
+import "./receiver";
 dotenv.config();
 
 const app = express();
@@ -40,5 +40,3 @@ const serviceName = process.env.SERVICE_NAME || "Email-Service";
 app.listen(port, () => {
   console.log(`${serviceName} is running on port ${port}`);
 });
-
-
