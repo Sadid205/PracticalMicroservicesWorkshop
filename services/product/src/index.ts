@@ -7,7 +7,7 @@ import {
   getProductDetails,
   getProducts,
   updateProduct,
-} from "./controllers";
+} from "@/controllers";
 
 dotenv.config();
 

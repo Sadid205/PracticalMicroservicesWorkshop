@@ -1,5 +1,5 @@
 import amqp from "amqplib";
-import { QUEUE_URL } from "./config";
+import { QUEUE_URL } from "@/config";
 const sendToQueue = async (queue: string, message: string) => {
   const connection = await amqp.connect(QUEUE_URL);
   const channel = await connection.createChannel();

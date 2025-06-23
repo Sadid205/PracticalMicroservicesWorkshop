@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-import { addToCart, clearCart, getMyCart } from "./controllers";
-import "./events/onKeyExpires";
-import "./receiver";
+import { addToCart, clearCart, getMyCart } from "@/controllers";
+import "@/events/onKeyExpires";
+import "@/receiver";
 dotenv.config();
 
 const app = express();

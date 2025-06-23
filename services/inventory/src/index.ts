@@ -7,7 +7,7 @@ import {
   getInventoryById,
   getInventoryDetails,
   updateInventory,
-} from "./controllers";
+} from "@/controllers";
 
 dotenv.config();
 

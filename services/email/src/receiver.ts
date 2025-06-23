@@ -1,12 +1,12 @@
 import amqp from "amqplib";
-import { defaultSender, transporter } from "./config";
-import prisma from "./prisma";
+import { defaultSender, transporter } from "@/config";
+import prisma from "@/prisma";
 
 const receiveFromQueue = async (
   queue: string,
   callback: (message: string) => void
 ) => {
-  const connection = await amqp.connect("amqp://localhost");
+  const connection = await amqp.connect("amqp://rabbitmq");
   const channel = await connection.createChannel();
 
   const exchange = "order";

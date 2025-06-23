@@ -7,7 +7,7 @@ import {
   userRegistration,
   verifyEmail,
   verifyToken,
-} from "./controllers";
+} from "@/controllers";
 
 dotenv.config();
 

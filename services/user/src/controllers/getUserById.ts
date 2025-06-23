@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "@/prisma";
-import createUser from "./createUser";
 import { User } from "@prisma/client";
 
 // /user/:id?field=id|authUserId
