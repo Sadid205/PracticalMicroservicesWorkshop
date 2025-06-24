@@ -173,6 +173,11 @@ services:
       - microservice-net
     volumes:
       - mailhog:/var/lib/mailhog
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8025 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis-stack:
     image: redis/redis-stack:latest
@@ -196,10 +201,10 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping && rabbitmqctl status"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
 
   # Service container
 
@@ -261,8 +266,12 @@ services:
     env_file:
       - ./services/email/.env
     depends_on:
-      - postgres
-      - mailhog
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+      mailhog:
+        condition: service_started
     networks:
       - microservice-net
   cart:
